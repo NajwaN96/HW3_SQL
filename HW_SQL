@@ -1,0 +1,76 @@
+/*create database  */
+
+create database store
+
+
+/*create table */
+use store;
+
+create table countries(
+code int primary key,
+name varchar(20) unique,
+continent_name varchar(20) not null
+);
+
+
+use store;
+create table users(
+id int primary key,
+full_name varchar(20),
+email varchar(20) unique,
+gender char (1) check(gender="m" or gender="f"),
+date_of_birth varchar(15),
+created_at datetime,
+country_code int,
+foreign key (country_code) references countries(code)
+);
+
+
+use store;
+create table orders(
+id int primary key,
+user_id int,
+status varchar(6) check(status ="start" or status ="finish"),
+foreign key (user_id) references users(id)
+);
+
+
+use store;
+create table order_products(
+order_id int,
+product_id int,
+quantity int default 0,
+primary key (order_id , product_id),
+foreign key (order_id) references orders(id),
+foreign key (product_id) references products(id)
+);
+
+
+use store;
+create table products(
+id int primary key,
+name varchar(10) not null,
+price int default 0 ,
+status varchar(10) check(status ="valid" or status ="expired"),
+created_at datetime
+);
+
+
+alter table products 
+modify column created_at datetime default  current_timestamp;
+alter table users
+modify column created_at datetime default  current_timestamp;
+
+
+/*insert */
+insert into countries values (11,'najwa','KSA');
+insert into users values (1,'Najwa Alshahrani','najwa@gmail.com','f','19/08/1996',17/02/2022,11);
+insert into orders values (54,'1','start',17/02/2022);
+insert into products values (69,'phone',4500,'valid',17/02/2022);
+insert into order_products values (54,69,1);
+
+/*update*/
+update countries set name='Nawaf' where code = 11;
+
+/*delete */
+delete from products where id = 69;
